@@ -12,6 +12,7 @@ python
 """
 from collections import deque
 
+
 def search(lines, pattern, history=5):
     # 实例化一个指定长度的队列
     previous_lines = deque(maxlen=history)
