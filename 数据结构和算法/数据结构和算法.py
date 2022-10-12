@@ -33,6 +33,7 @@ def example_1():
             # 打印匹配行
             print(line, end='')
 
+
 # example_1()
 """
 deque，一个两端都可以操作的队列
@@ -65,11 +66,13 @@ def example_2():
     # 注意实际返回为dic 的key，即k1、k2..
     print(heapq.nlargest(3, dic, key=lambda s: dic[s]['num']))
 
+
 # example_2()
 
 """
 优先级队列，根据优先级pop优先级最高的值
 """
+
 
 class PriorityQueue(object):
     def __init__(self):
@@ -98,6 +101,7 @@ def example_3():
     print(queue.pop())
     print(queue.pop())
 
+
 # example_3()
 
 ##############################################################################################
@@ -107,6 +111,7 @@ def example_3():
 """
 
 from collections import defaultdict
+
 
 def example_4():
     # 使用defaultdict创建字典可以自动初始化第一个值
@@ -118,6 +123,7 @@ def example_4():
     d['k2'].append(2)
     print(d['k1'])
 
+
 # example_4()
 
 ##############################################################################################
@@ -125,6 +131,7 @@ def example_4():
 """
 对字典值进行操作
 """
+
 
 def example_5():
     d = {'k1': 789,
@@ -141,6 +148,7 @@ def example_5():
     # 返回值最小的键
     print(min(d, key=lambda key: d[key]))
 
+
 # example_5()
 
 ##############################################################################################
@@ -148,6 +156,8 @@ def example_5():
 """
 在两个字典中寻找相同点
 """
+
+
 def example_6():
     d1 = {'k1': 1,
           'k2': 1,
@@ -159,4 +169,125 @@ def example_6():
     # items()也支持，但是注意value()方法不支持，因为值可能不是唯一的。
     print(d1.keys() & d2.keys())
 
+
 # example_6()
+
+##############################################################################################
+
+"""
+统计重复元素出现的次数。
+"""
+
+
+def example_7():
+    from collections import Counter
+    _list = ['a', 'a', 'a', 'b', 'b', 'c']
+    # 返回字典
+    _count = Counter(_list)
+    print(_count.most_common(1))
+
+
+# example_7()
+
+##############################################################################################
+
+
+"""
+利用itemgetter排序字典
+"""
+
+
+def example_8():
+    from operator import itemgetter
+    t1 = [{'key': 'k3', 'value': 3},
+          {'key': 'k1', 'value': 1},
+          {'key': 'k2', 'value': 2}]
+    # 通过itemgetter 根据字典中对应的键来排序
+    # 前面示例使用了lambda，对于公共键（键名相同）来说，使用itemgetter速度更快
+    print(sorted(t1, key=itemgetter('value')))
+    print(itemgetter('value'))
+
+
+# example_8()
+
+##############################################################################################
+
+
+"""
+对无法原生支持的类型排序
+"""
+
+
+def example_9():
+    from operator import attrgetter
+    class User(object):
+        def __init__(self, user_id):
+            self.user_id = user_id
+
+        def __repr__(self):
+            return f'user id : {self.user_id}'
+
+    users = [User(13), User(2), User(20)]
+    # 利用attrgetter函数来获得对象的类属性来进行排序
+    print(sorted(users, key=attrgetter('user_id')))
+    # 使用lambda效果一样
+    print(sorted(users, key=lambda s: s.user_id))
+
+
+# example_9()
+
+##############################################################################################
+
+"""
+根据指定的字段值进行分组处理
+"""
+
+def example_10():
+    from operator import itemgetter
+    from itertools import groupby
+    from collections import defaultdict
+    rows = [{'id': 0, 'date': '2022:09:17'},
+            {'id': 1, 'date': '2022:09:17'},
+            {'id': 2, 'date': '2022:10:15'},
+            {'id': 3, 'date': '2022:10:15'},
+            {'id': 4, 'date': '2022:08:27'}]
+
+    rows_by_date = defaultdict(list)
+    # 创建一个新的字典（默认值为一个列表）按日期来存放数据
+    for row in rows:
+        # 以date的值做为键，值为默认的list，相同日期的数据都会加到同一列表
+        rows_by_date[row['date']].append(row)
+    # print(rows_by_date['2022:10:15'])
+
+    # 利用groupby将相同值进行分组（groupby返回一个迭代器）处理数据量大的时候比较好用
+    # 首先要对groupby的值进行排序
+    rows.sort(key=itemgetter('date'))
+    # 使用key关键字对指定键分组
+    for date, items in groupby(rows, key=itemgetter('date')):
+        print(date)
+        for i in items:
+            print(i)
+
+# example_10()
+
+
+"""
+筛选序列元素
+"""
+
+def example_11():
+    values = ['4', '5', 'aaa', None]
+    def is_int(val):
+        try:
+            int(val)
+            return True
+        except (ValueError, TypeError):
+            return False
+    # 通过filter实现自定复杂过滤规则函数。
+    int_value = filter(is_int, values)
+    print(list(int_value))
+    # 简单的过滤也可通过列表推导式来实现
+    values = [4, 5, 0]
+    print([i for i in values if i > 0])
+
+example_11()
