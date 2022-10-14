@@ -290,4 +290,52 @@ def example_11():
     values = [4, 5, 0]
     print([i for i in values if i > 0])
 
-example_11()
+# example_11()
+
+"""
+字典推导式
+"""
+def example_12():
+    pr = {'k1': 100,
+          'k2': 100,
+          'k3': 200}
+    prr = {key: value for key, value in pr.items() if value == 100}
+    print(prr)
+
+# example_12()
+
+"""
+命名元祖
+"""
+
+def example_13():
+    from collections import namedtuple
+    # 工厂方法，返回元祖类型的子类
+    Named = namedtuple('test', ['k1', 'k2'])
+    # 实例化
+    test = Named('v1', 'v2')
+    # 可以使用普通元祖支持的所有操作
+    # 相比字典开销会小一些
+    # 需要通过位置索引元祖时可以考虑使用namedtuple解下耦，使其不依赖位置
+    print(test.k1)
+
+# example_13()
+
+
+"""
+将多个映射合并为单个
+"""
+
+def example_14():
+    from collections import ChainMap
+    d1 = {'a': 1, 'b': 2}
+    d2 = {'c': 3, 'd': 4}
+    # 不会额外创建新的字典，只是维护底层映射
+    temp_map = ChainMap(d1, d2)
+    print(temp_map)
+    print(temp_map['a'])
+    # 因为使用底层的映射，修改源字典后map也会随之更改
+    d1['a'] = 11
+    print(temp_map['a'])
+
+# example_14()
